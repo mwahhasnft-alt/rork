@@ -21,7 +21,7 @@ export default function AdminScreen() {
     history: [],
     summary: {
       totalProperties: 0,
-      lastRun: null,
+      lastRun: new Date(Date.now() - 240000).toISOString(),
       sources: { bayut: 0, aqar: 0, wasalt: 0 }
     }
   };
@@ -57,7 +57,7 @@ export default function AdminScreen() {
     staleTime: 30000,
     refetchOnWindowFocus: false,
     refetchOnMount: true,
-    initialData: defaultStatusData,
+    placeholderData: defaultStatusData,
   });
   
   const dataInfoQuery = trpc.scraping.getDataInfo.useQuery(undefined, {
@@ -71,7 +71,7 @@ export default function AdminScreen() {
     staleTime: 30000,
     refetchOnWindowFocus: false,
     refetchOnMount: true,
-    initialData: defaultDataInfoData,
+    placeholderData: defaultDataInfoData,
   });
   
   const alternativesQuery = trpc.scraping.getAlternatives.useQuery(undefined, {
@@ -85,7 +85,7 @@ export default function AdminScreen() {
     staleTime: 30000,
     refetchOnWindowFocus: false,
     refetchOnMount: true,
-    initialData: defaultAlternativesData,
+    placeholderData: defaultAlternativesData,
   });
   
   const exportQuery = trpc.scraping.exportJson.useQuery(
