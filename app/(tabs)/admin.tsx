@@ -6,12 +6,15 @@ import { CustomHeader } from '@/components/ui/CustomHeader';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export default function AdminScreen() {
+  const { colors, shadows } = useTheme();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showImportModal, setShowImportModal] = useState<boolean>(false);
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
   const [showAlternativesModal, setShowAlternativesModal] = useState<boolean>(false);
   const [importData, setImportData] = useState<string>('');
   const [selectedTab, setSelectedTab] = useState<'overview' | 'data' | 'alternatives' | 'analytics'>('overview');
+  
+  const styles = React.useMemo(() => createStyles(colors, shadows), [colors, shadows]);
   
   // Default data to prevent undefined errors
   const defaultStatusData = {
@@ -268,7 +271,7 @@ export default function AdminScreen() {
         
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
-            <Database size={20} color="#6B7280" />
+            <Database size={20} color={colors.textTertiary} />
             <Text style={styles.statValue}>{status.summary?.totalProperties || 0}</Text>
             <Text style={styles.statLabel}>Total Properties</Text>
           </View>
@@ -513,7 +516,7 @@ export default function AdminScreen() {
           style={[styles.tab, selectedTab === 'overview' && styles.activeTab]}
           onPress={() => setSelectedTab('overview')}
         >
-          <Settings size={16} color={selectedTab === 'overview' ? '#007AFF' : '#6B7280'} />
+          <Settings size={16} color={selectedTab === 'overview' ? colors.tint : colors.textTertiary} />
           <Text style={[styles.tabText, selectedTab === 'overview' && styles.activeTabText]}>Overview</Text>
         </TouchableOpacity>
         
@@ -521,7 +524,7 @@ export default function AdminScreen() {
           style={[styles.tab, selectedTab === 'data' && styles.activeTab]}
           onPress={() => setSelectedTab('data')}
         >
-          <Database size={16} color={selectedTab === 'data' ? '#007AFF' : '#6B7280'} />
+          <Database size={16} color={selectedTab === 'data' ? colors.tint : colors.textTertiary} />
           <Text style={[styles.tabText, selectedTab === 'data' && styles.activeTabText]}>Data</Text>
         </TouchableOpacity>
         
@@ -529,7 +532,7 @@ export default function AdminScreen() {
           style={[styles.tab, selectedTab === 'alternatives' && styles.activeTab]}
           onPress={() => setSelectedTab('alternatives')}
         >
-          <Info size={16} color={selectedTab === 'alternatives' ? '#007AFF' : '#6B7280'} />
+          <Info size={16} color={selectedTab === 'alternatives' ? colors.tint : colors.textTertiary} />
           <Text style={[styles.tabText, selectedTab === 'alternatives' && styles.activeTabText]}>Solutions</Text>
         </TouchableOpacity>
         
@@ -537,7 +540,7 @@ export default function AdminScreen() {
           style={[styles.tab, selectedTab === 'analytics' && styles.activeTab]}
           onPress={() => setSelectedTab('analytics')}
         >
-          <BarChart3 size={16} color={selectedTab === 'analytics' ? '#007AFF' : '#6B7280'} />
+          <BarChart3 size={16} color={selectedTab === 'analytics' ? colors.tint : colors.textTertiary} />
           <Text style={[styles.tabText, selectedTab === 'analytics' && styles.activeTabText]}>Analytics</Text>
         </TouchableOpacity>
       </View>
@@ -549,7 +552,7 @@ export default function AdminScreen() {
         {(statusQuery.isLoading || dataInfoQuery.isLoading || alternativesQuery.isLoading) && (
           <View style={styles.card}>
             <View style={styles.statusRow}>
-              <ActivityIndicator size="small" color="#007AFF" />
+              <ActivityIndicator size="small" color={colors.tint} />
               <Text style={styles.statusText}>Loading scraping data...</Text>
             </View>
             <Text style={styles.loadingSubtext}>
@@ -612,6 +615,7 @@ export default function AdminScreen() {
             style={styles.jsonInput}
             multiline
             placeholder="Paste JSON data here..."
+            placeholderTextColor={colors.placeholder}
             value={importData}
             onChangeText={setImportData}
           />
@@ -707,16 +711,16 @@ export default function AdminScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any, shadows: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: colors.background,
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.card,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: colors.border,
   },
   tab: {
     flex: 1,
@@ -728,15 +732,15 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: '#007AFF',
+    borderBottomColor: colors.tint,
   },
   tabText: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#6B7280',
+    color: colors.textTertiary,
   },
   activeTabText: {
-    color: '#007AFF',
+    color: colors.tint,
     fontWeight: '600',
   },
   scrollContent: {
@@ -745,25 +749,21 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1F2937',
+    color: colors.text,
     marginBottom: 20,
     textAlign: 'center',
   },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    ...shadows.medium,
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1F2937',
+    color: colors.text,
     marginBottom: 12,
   },
   statusRow: {
@@ -780,7 +780,7 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#374151',
+    color: colors.textSecondary,
   },
   statsContainer: {
     flexDirection: 'row',
@@ -793,11 +793,11 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1F2937',
+    color: colors.text,
   },
   statLabel: {
     fontSize: 12,
-    color: '#6B7280',
+    color: colors.textTertiary,
   },
   actionButton: {
     flexDirection: 'row',
@@ -810,7 +810,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   primaryButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.tint,
   },
   primaryButtonText: {
     color: '#FFFFFF',
@@ -818,17 +818,17 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   secondaryButton: {
-    backgroundColor: '#F3F4F6',
+    backgroundColor: colors.backgroundSecondary,
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: colors.border,
   },
   secondaryButtonText: {
-    color: '#374151',
+    color: colors.text,
     fontSize: 14,
     fontWeight: '500',
   },
   successButton: {
-    backgroundColor: '#10B981',
+    backgroundColor: colors.success,
   },
   successButtonText: {
     color: '#FFFFFF',
@@ -836,7 +836,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   infoButton: {
-    backgroundColor: '#3B82F6',
+    backgroundColor: colors.info,
   },
   infoButtonText: {
     color: '#FFFFFF',
@@ -844,7 +844,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   dangerButton: {
-    backgroundColor: '#EF4444',
+    backgroundColor: colors.error,
   },
   dangerButtonText: {
     color: '#FFFFFF',
@@ -858,7 +858,7 @@ const styles = StyleSheet.create({
   historyItem: {
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: colors.border,
   },
   historyHeader: {
     flexDirection: 'row',
@@ -868,15 +868,15 @@ const styles = StyleSheet.create({
   historyTitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#1F2937',
+    color: colors.text,
   },
   historyTime: {
     fontSize: 12,
-    color: '#6B7280',
+    color: colors.textTertiary,
   },
   historyDetails: {
     fontSize: 12,
-    color: '#6B7280',
+    color: colors.textTertiary,
     marginTop: 2,
   },
   qualityStats: {
@@ -890,11 +890,11 @@ const styles = StyleSheet.create({
   qualityValue: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#10B981',
+    color: colors.success,
   },
   qualityLabel: {
     fontSize: 12,
-    color: '#6B7280',
+    color: colors.textTertiary,
     textAlign: 'center',
   },
   limitationsSection: {
@@ -906,18 +906,18 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1F2937',
+    color: colors.text,
     marginBottom: 8,
   },
   limitationText: {
     fontSize: 14,
-    color: '#EF4444',
+    color: colors.error,
     marginBottom: 4,
     lineHeight: 20,
   },
   recommendationText: {
     fontSize: 14,
-    color: '#10B981',
+    color: colors.success,
     marginBottom: 4,
     lineHeight: 20,
   },
@@ -930,18 +930,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: colors.backgroundSecondary,
     borderRadius: 6,
   },
   sourceStatLabel: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#374151',
+    color: colors.textSecondary,
   },
   sourceStatValue: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#1F2937',
+    color: colors.text,
   },
   priceStats: {
     gap: 8,
@@ -952,18 +952,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: colors.backgroundTertiary,
     borderRadius: 6,
   },
   priceStatLabel: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#92400E',
+    color: colors.accent,
   },
   priceStatValue: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#92400E',
+    color: colors.accent,
   },
   typeStats: {
     gap: 8,
@@ -974,22 +974,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: '#DBEAFE',
+    backgroundColor: colors.backgroundTertiary,
     borderRadius: 6,
   },
   typeStatLabel: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#1E40AF',
+    color: colors.tint,
   },
   typeStatValue: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#1E40AF',
+    color: colors.tint,
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -997,20 +997,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: colors.border,
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1F2937',
+    color: colors.text,
   },
   modalClose: {
     fontSize: 16,
-    color: '#007AFF',
+    color: colors.tint,
   },
   modalDescription: {
     fontSize: 14,
-    color: '#6B7280',
+    color: colors.textSecondary,
     margin: 16,
     lineHeight: 20,
   },
@@ -1018,7 +1018,9 @@ const styles = StyleSheet.create({
     margin: 16,
     padding: 12,
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: colors.inputBorder,
+    backgroundColor: colors.input,
+    color: colors.text,
     borderRadius: 8,
     fontSize: 14,
     minHeight: 200,
@@ -1031,7 +1033,7 @@ const styles = StyleSheet.create({
   exportData: {
     fontSize: 12,
     fontFamily: 'monospace',
-    color: '#374151',
+    color: colors.textSecondary,
     lineHeight: 16,
   },
   alternativesContent: {
@@ -1041,12 +1043,12 @@ const styles = StyleSheet.create({
   alternativesSectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1F2937',
+    color: colors.text,
     marginTop: 16,
     marginBottom: 12,
   },
   alternativeItem: {
-    backgroundColor: '#F9FAFB',
+    backgroundColor: colors.backgroundSecondary,
     padding: 12,
     borderRadius: 8,
     marginBottom: 12,
@@ -1054,28 +1056,28 @@ const styles = StyleSheet.create({
   alternativeTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1F2937',
+    color: colors.text,
     marginBottom: 4,
   },
   alternativeDescription: {
     fontSize: 14,
-    color: '#6B7280',
+    color: colors.textSecondary,
     marginBottom: 4,
     lineHeight: 20,
   },
   alternativeStatus: {
     fontSize: 12,
-    color: '#3B82F6',
+    color: colors.info,
     fontWeight: '500',
   },
   alternativeExamples: {
     fontSize: 12,
-    color: '#10B981',
+    color: colors.success,
     fontWeight: '500',
   },
   alternativeFormat: {
     fontSize: 12,
-    color: '#8B5CF6',
+    color: colors.accent,
     fontWeight: '500',
   },
   errorCard: {
@@ -1099,35 +1101,35 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   warningCard: {
-    backgroundColor: '#FEF3C7',
+    backgroundColor: colors.backgroundTertiary,
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#FCD34D',
+    borderColor: colors.warning,
   },
   warningTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#92400E',
+    color: colors.warning,
     marginBottom: 8,
   },
   warningMessage: {
     fontSize: 14,
-    color: '#78350F',
+    color: colors.textSecondary,
     marginBottom: 8,
     lineHeight: 20,
   },
   warningSubtext: {
     fontSize: 12,
-    color: '#92400E',
+    color: colors.textTertiary,
     marginBottom: 12,
     lineHeight: 16,
     fontStyle: 'italic',
   },
   loadingSubtext: {
     fontSize: 12,
-    color: '#6B7280',
+    color: colors.textTertiary,
     marginTop: 4,
     lineHeight: 16,
   },
