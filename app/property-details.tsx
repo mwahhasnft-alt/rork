@@ -26,6 +26,7 @@ import {
   Share,
 } from 'lucide-react-native';
 import { useProperties } from '@/contexts/PropertyContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { SAUDI_PROPERTIES } from '@/constants/property-data';
 
 const { width } = Dimensions.get('window');
@@ -33,16 +34,17 @@ const { width } = Dimensions.get('window');
 export default function PropertyDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { favorites, toggleFavorite } = useProperties();
+  const { colors, shadows } = useTheme();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const property = SAUDI_PROPERTIES.find(p => p.id === id);
 
   if (!property) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>العقار غير موجود</Text>
-          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <Text style={[styles.errorText, { color: colors.textMuted }]}>العقار غير موجود</Text>
+          <TouchableOpacity style={[styles.backButton, { backgroundColor: colors.tint }]} onPress={() => router.back()}>
             <Text style={styles.backButtonText}>العودة</Text>
           </TouchableOpacity>
         </View>
@@ -77,7 +79,7 @@ export default function PropertyDetailsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
@@ -139,15 +141,15 @@ export default function PropertyDetailsScreen() {
         </View>
 
         {/* Property Info */}
-        <View style={styles.propertyInfo}>
-          <Text style={styles.propertyTitle}>{property.title}</Text>
-          <Text style={styles.propertyPrice}>
+        <View style={[styles.propertyInfo, { backgroundColor: colors.card }, shadows.medium]}>
+          <Text style={[styles.propertyTitle, { color: colors.text }]}>{property.title}</Text>
+          <Text style={[styles.propertyPrice, { color: colors.tint }]}>
             {formatPrice(property.price)} {property.currency}
           </Text>
           
           <View style={styles.locationContainer}>
-            <MapPin color="#8E8E93" size={16} />
-            <Text style={styles.locationText}>
+            <MapPin color={colors.textMuted} size={16} />
+            <Text style={[styles.locationText, { color: colors.textMuted }]}>
               {property.location.district}، {property.location.city}
             </Text>
           </View>
@@ -155,77 +157,77 @@ export default function PropertyDetailsScreen() {
           {/* Property Details */}
           <View style={styles.detailsGrid}>
             {property.details.bedrooms && property.details.bedrooms > 0 && (
-              <View style={styles.detailCard}>
-                <Bed color="#007AFF" size={24} />
-                <Text style={styles.detailNumber}>{property.details.bedrooms}</Text>
-                <Text style={styles.detailLabel}>غرف نوم</Text>
+              <View style={[styles.detailCard, { backgroundColor: colors.backgroundSecondary }]}>
+                <Bed color={colors.tint} size={24} />
+                <Text style={[styles.detailNumber, { color: colors.text }]}>{property.details.bedrooms}</Text>
+                <Text style={[styles.detailLabel, { color: colors.textMuted }]}>غرف نوم</Text>
               </View>
             )}
             {property.details.bathrooms && (
-              <View style={styles.detailCard}>
-                <Bath color="#007AFF" size={24} />
-                <Text style={styles.detailNumber}>{property.details.bathrooms}</Text>
-                <Text style={styles.detailLabel}>حمامات</Text>
+              <View style={[styles.detailCard, { backgroundColor: colors.backgroundSecondary }]}>
+                <Bath color={colors.tint} size={24} />
+                <Text style={[styles.detailNumber, { color: colors.text }]}>{property.details.bathrooms}</Text>
+                <Text style={[styles.detailLabel, { color: colors.textMuted }]}>حمامات</Text>
               </View>
             )}
-            <View style={styles.detailCard}>
-              <Square color="#007AFF" size={24} />
-              <Text style={styles.detailNumber}>{property.details.area}</Text>
-              <Text style={styles.detailLabel}>م²</Text>
+            <View style={[styles.detailCard, { backgroundColor: colors.backgroundSecondary }]}>
+              <Square color={colors.tint} size={24} />
+              <Text style={[styles.detailNumber, { color: colors.text }]}>{property.details.area}</Text>
+              <Text style={[styles.detailLabel, { color: colors.textMuted }]}>م²</Text>
             </View>
             {property.details.parking && (
-              <View style={styles.detailCard}>
-                <Car color="#007AFF" size={24} />
-                <Text style={styles.detailNumber}>✓</Text>
-                <Text style={styles.detailLabel}>موقف</Text>
+              <View style={[styles.detailCard, { backgroundColor: colors.backgroundSecondary }]}>
+                <Car color={colors.tint} size={24} />
+                <Text style={[styles.detailNumber, { color: colors.text }]}>✓</Text>
+                <Text style={[styles.detailLabel, { color: colors.textMuted }]}>موقف</Text>
               </View>
             )}
           </View>
 
           {/* Additional Details */}
-          <View style={styles.additionalDetails}>
+          <View style={[styles.additionalDetails, { backgroundColor: colors.backgroundSecondary }]}>
             {property.details.floor && (
-              <View style={styles.additionalDetailRow}>
-                <Text style={styles.additionalDetailLabel}>الطابق:</Text>
-                <Text style={styles.additionalDetailValue}>
+              <View style={[styles.additionalDetailRow, { borderBottomColor: colors.border }]}>
+                <Text style={[styles.additionalDetailLabel, { color: colors.textMuted }]}>الطابق:</Text>
+                <Text style={[styles.additionalDetailValue, { color: colors.text }]}>
                   {property.details.floor}
                   {property.details.totalFloors && ` من ${property.details.totalFloors}`}
                 </Text>
               </View>
             )}
             {property.details.yearBuilt && (
-              <View style={styles.additionalDetailRow}>
-                <Text style={styles.additionalDetailLabel}>سنة البناء:</Text>
-                <Text style={styles.additionalDetailValue}>{property.details.yearBuilt}</Text>
+              <View style={[styles.additionalDetailRow, { borderBottomColor: colors.border }]}>
+                <Text style={[styles.additionalDetailLabel, { color: colors.textMuted }]}>سنة البناء:</Text>
+                <Text style={[styles.additionalDetailValue, { color: colors.text }]}>{property.details.yearBuilt}</Text>
               </View>
             )}
-            <View style={styles.additionalDetailRow}>
-              <Text style={styles.additionalDetailLabel}>مفروش:</Text>
-              <Text style={styles.additionalDetailValue}>
+            <View style={[styles.additionalDetailRow, { borderBottomColor: colors.border }]}>
+              <Text style={[styles.additionalDetailLabel, { color: colors.textMuted }]}>مفروش:</Text>
+              <Text style={[styles.additionalDetailValue, { color: colors.text }]}>
                 {property.details.furnished ? 'نعم' : 'لا'}
               </Text>
             </View>
-            <View style={styles.additionalDetailRow}>
-              <Text style={styles.additionalDetailLabel}>تاريخ الإضافة:</Text>
-              <Text style={styles.additionalDetailValue}>{formatDate(property.createdAt)}</Text>
+            <View style={[styles.additionalDetailRow, { borderBottomColor: colors.border }]}>
+              <Text style={[styles.additionalDetailLabel, { color: colors.textMuted }]}>تاريخ الإضافة:</Text>
+              <Text style={[styles.additionalDetailValue, { color: colors.text }]}>{formatDate(property.createdAt)}</Text>
             </View>
           </View>
 
           {/* Description */}
           <View style={styles.descriptionSection}>
-            <Text style={styles.sectionTitle}>الوصف</Text>
-            <Text style={styles.description}>{property.description}</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>الوصف</Text>
+            <Text style={[styles.description, { color: colors.textSecondary }]}>{property.description}</Text>
           </View>
 
           {/* Features */}
           {property.features.length > 0 && (
             <View style={styles.featuresSection}>
-              <Text style={styles.sectionTitle}>المميزات</Text>
+              <Text style={[styles.sectionTitle, { color: colors.text }]}>المميزات</Text>
               <View style={styles.featuresGrid}>
                 {property.features.map((feature, index) => (
-                  <View key={index} style={styles.featureTag}>
-                    <Star color="#007AFF" size={14} />
-                    <Text style={styles.featureText}>{feature}</Text>
+                  <View key={index} style={[styles.featureTag, { backgroundColor: colors.backgroundTertiary }]}>
+                    <Star color={colors.tint} size={14} />
+                    <Text style={[styles.featureText, { color: colors.tint }]}>{feature}</Text>
                   </View>
                 ))}
               </View>
@@ -235,28 +237,28 @@ export default function PropertyDetailsScreen() {
           {/* Agent Info */}
           {property.agent && (
             <View style={styles.agentSection}>
-              <Text style={styles.sectionTitle}>معلومات الوسيط</Text>
-              <View style={styles.agentCard}>
+              <Text style={[styles.sectionTitle, { color: colors.text }]}>معلومات الوسيط</Text>
+              <View style={[styles.agentCard, { backgroundColor: colors.backgroundSecondary }]}>
                 <View style={styles.agentInfo}>
                   {property.agent.avatar ? (
                     <Image source={{ uri: property.agent.avatar }} style={styles.agentAvatar} />
                   ) : (
-                    <View style={styles.agentAvatarPlaceholder}>
+                    <View style={[styles.agentAvatarPlaceholder, { backgroundColor: colors.tint }]}>
                       <Text style={styles.agentInitial}>
                         {property.agent.name.charAt(0)}
                       </Text>
                     </View>
                   )}
                   <View style={styles.agentDetails}>
-                    <Text style={styles.agentName}>{property.agent.name}</Text>
-                    <Text style={styles.agentTitle}>وسيط عقاري</Text>
+                    <Text style={[styles.agentName, { color: colors.text }]}>{property.agent.name}</Text>
+                    <Text style={[styles.agentTitle, { color: colors.textMuted }]}>وسيط عقاري</Text>
                   </View>
                 </View>
                 <View style={styles.agentActions}>
-                  <TouchableOpacity style={styles.contactButton} onPress={handleCall}>
+                  <TouchableOpacity style={[styles.contactButton, { backgroundColor: colors.tint }]} onPress={handleCall}>
                     <Phone color="#FFFFFF" size={18} />
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.contactButton} onPress={handleEmail}>
+                  <TouchableOpacity style={[styles.contactButton, { backgroundColor: colors.tint }]} onPress={handleEmail}>
                     <Mail color="#FFFFFF" size={18} />
                   </TouchableOpacity>
                 </View>
@@ -267,16 +269,16 @@ export default function PropertyDetailsScreen() {
       </ScrollView>
 
       {/* Bottom Action Bar */}
-      <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.contactMainButton} onPress={handleCall}>
+      <View style={[styles.bottomBar, { backgroundColor: colors.card, borderTopColor: colors.border }, shadows.medium]}>
+        <TouchableOpacity style={[styles.contactMainButton, { backgroundColor: colors.tint }]} onPress={handleCall}>
           <Phone color="#FFFFFF" size={20} />
           <Text style={styles.contactMainButtonText}>اتصل الآن</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.favoriteMainButton} onPress={() => toggleFavorite(property.id)}>
+        <TouchableOpacity style={[styles.favoriteMainButton, { backgroundColor: colors.backgroundSecondary }]} onPress={() => toggleFavorite(property.id)}>
           <Heart 
-            color={isFavorite ? "#FF3B30" : "#8E8E93"} 
+            color={isFavorite ? colors.error : colors.textMuted} 
             size={20} 
-            fill={isFavorite ? "#FF3B30" : "transparent"}
+            fill={isFavorite ? colors.error : "transparent"}
           />
         </TouchableOpacity>
       </View>
@@ -287,7 +289,6 @@ export default function PropertyDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
   },
   scrollView: {
     flex: 1,
@@ -321,7 +322,6 @@ const styles = StyleSheet.create({
   propertyImage: {
     width: width,
     height: 300,
-    backgroundColor: '#F8F8F8',
   },
   imageIndicators: {
     position: 'absolute',
@@ -356,7 +356,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   propertyInfo: {
-    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     marginTop: -24,
@@ -367,14 +366,12 @@ const styles = StyleSheet.create({
   propertyTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000000',
     textAlign: 'right',
     marginBottom: 8,
   },
   propertyPrice: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#007AFF',
     textAlign: 'right',
     marginBottom: 16,
   },
@@ -386,7 +383,6 @@ const styles = StyleSheet.create({
   },
   locationText: {
     fontSize: 16,
-    color: '#8E8E93',
     marginRight: 8,
   },
   detailsGrid: {
@@ -395,7 +391,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   detailCard: {
-    backgroundColor: '#F8F8F8',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
@@ -405,17 +400,14 @@ const styles = StyleSheet.create({
   detailNumber: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#000000',
     marginTop: 8,
     marginBottom: 4,
   },
   detailLabel: {
     fontSize: 12,
-    color: '#8E8E93',
     textAlign: 'center',
   },
   additionalDetails: {
-    backgroundColor: '#F8F8F8',
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
@@ -426,16 +418,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#E5E5EA',
   },
   additionalDetailLabel: {
     fontSize: 14,
-    color: '#8E8E93',
     fontWeight: '500',
   },
   additionalDetailValue: {
     fontSize: 14,
-    color: '#000000',
     fontWeight: '600',
   },
   descriptionSection: {
@@ -444,13 +433,11 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#000000',
     textAlign: 'right',
     marginBottom: 12,
   },
   description: {
     fontSize: 16,
-    color: '#3C3C43',
     lineHeight: 24,
     textAlign: 'right',
   },
@@ -465,7 +452,6 @@ const styles = StyleSheet.create({
   featureTag: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E3F2FD',
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 6,
@@ -473,7 +459,6 @@ const styles = StyleSheet.create({
   },
   featureText: {
     fontSize: 12,
-    color: '#007AFF',
     marginLeft: 4,
     fontWeight: '500',
   },
@@ -481,7 +466,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   agentCard: {
-    backgroundColor: '#F8F8F8',
     borderRadius: 12,
     padding: 16,
     flexDirection: 'row',
@@ -503,7 +487,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#007AFF',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -519,13 +502,11 @@ const styles = StyleSheet.create({
   agentName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#000000',
     textAlign: 'right',
     marginBottom: 2,
   },
   agentTitle: {
     fontSize: 12,
-    color: '#8E8E93',
     textAlign: 'right',
   },
   agentActions: {
@@ -533,7 +514,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   contactButton: {
-    backgroundColor: '#007AFF',
     borderRadius: 20,
     padding: 10,
   },
@@ -542,9 +522,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#FFFFFF',
     borderTopWidth: 0.5,
-    borderTopColor: '#E5E5EA',
     paddingHorizontal: 20,
     paddingVertical: 16,
     paddingBottom: 32,
@@ -553,7 +531,6 @@ const styles = StyleSheet.create({
   },
   contactMainButton: {
     flex: 1,
-    backgroundColor: '#007AFF',
     borderRadius: 12,
     paddingVertical: 16,
     flexDirection: 'row',
@@ -567,7 +544,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   favoriteMainButton: {
-    backgroundColor: '#F8F8F8',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 16,
@@ -582,12 +558,10 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 18,
-    color: '#8E8E93',
     textAlign: 'center',
     marginBottom: 20,
   },
   backButton: {
-    backgroundColor: '#007AFF',
     borderRadius: 12,
     paddingHorizontal: 24,
     paddingVertical: 12,
