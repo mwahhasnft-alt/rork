@@ -69,10 +69,10 @@ export default {
   },
   dark: {
     // Text Colors
-    text: "#F8FAFC", // Light text for dark mode
-    textSecondary: "#CBD5E1", // Medium light for secondary
-    textTertiary: "#94A3B8", // Medium gray for tertiary
-    textMuted: "#64748B", // Darker gray for muted
+    text: "#FFFFFF", // Pure white for primary text in dark mode
+    textSecondary: "#E2E8F0", // Light gray for secondary text
+    textTertiary: "#CBD5E1", // Medium light gray for tertiary text
+    textMuted: "#94A3B8", // Medium gray for muted text
     
     // Background Colors
     background: "#0F172A", // Rich dark background
@@ -82,36 +82,36 @@ export default {
     backgroundOverlay: "rgba(15, 23, 42, 0.9)", // Dark overlay
     
     // Brand Colors
-    tint: primaryDark,
-    tintSecondary: "#60A5FA", // Lighter blue
-    accent: accentDark,
-    accentSecondary: "#FCD34D", // Lighter gold
+    tint: "#60A5FA", // Brighter blue for better visibility
+    tintSecondary: "#93C5FD", // Even lighter blue
+    accent: "#FCD34D", // Brighter gold for better visibility
+    accentSecondary: "#FDE68A", // Even lighter gold
     
     // Navigation
     tabIconDefault: "#64748B",
-    tabIconSelected: primaryDark,
+    tabIconSelected: "#60A5FA", // Brighter blue for better visibility
     
     // Borders
-    border: "#334155", // Dark border
-    borderSecondary: "#475569", // Medium dark border
-    borderTertiary: "#1E293B", // Very dark border
+    border: "#475569", // Lighter border for better visibility
+    borderSecondary: "#64748B", // Medium border
+    borderTertiary: "#334155", // Darker border
     
     // Interactive Elements
-    placeholder: "#64748B",
+    placeholder: "#94A3B8", // Lighter placeholder for better visibility
     input: "#1E293B",
-    inputBorder: "#334155",
-    inputFocused: primaryDark,
+    inputBorder: "#475569", // Lighter border for better visibility
+    inputFocused: "#60A5FA", // Brighter focus color
     
     // Status Colors
-    success: "#34D399", // Bright green for dark mode
-    warning: accentDark,
-    error: "#F87171", // Bright red for dark mode
-    info: "#60A5FA", // Bright blue for dark mode
+    success: "#10B981", // Vibrant green for dark mode
+    warning: "#F59E0B", // Vibrant amber for dark mode
+    error: "#EF4444", // Vibrant red for dark mode
+    info: "#3B82F6", // Vibrant blue for dark mode
     
     // Card Colors
     card: "#1E293B",
     cardSecondary: "#334155",
-    cardElevated: "#1E293B",
+    cardElevated: "#334155", // Slightly lighter for better elevation
     
     // Shadow Colors
     shadow: "rgba(0, 0, 0, 0.25)",
@@ -119,9 +119,9 @@ export default {
     shadowElevated: "rgba(0, 0, 0, 0.35)",
     
     // Utility Colors
-    destructive: "#F87171",
+    destructive: "#EF4444", // More vibrant destructive color
     overlay: "rgba(15, 23, 42, 0.8)",
-    separator: "#334155",
+    separator: "#475569", // Lighter separator for better visibility
     
     // Property Status Colors
     available: "#34D399",

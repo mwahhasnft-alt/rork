@@ -327,7 +327,7 @@ const WaveformAnimation = ({ isActive, colors }: { isActive: boolean; colors: an
 };
 
 export default function ChatScreen() {
-  const { colors } = useTheme();
+  const { colors, shadows } = useTheme();
   const {
     messages,
     isLoading,
@@ -436,7 +436,14 @@ export default function ChatScreen() {
             key={message.id}
             style={[
               styles.messageContainer,
-              message.isUser ? styles.userMessage : styles.aiMessage,
+              message.isUser ? {
+                ...styles.userMessage,
+                backgroundColor: colors.tint,
+              } : {
+                ...styles.aiMessage,
+                backgroundColor: colors.card,
+                ...shadows.small,
+              },
             ]}
           >
             <View style={styles.messageContent}>
@@ -557,7 +564,6 @@ export default function ChatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
   },
   messagesContainer: {
     flex: 1,
@@ -577,7 +583,6 @@ const styles = StyleSheet.create({
   },
   userMessage: {
     alignSelf: 'flex-end',
-    backgroundColor: '#007AFF',
     borderRadius: 18,
     borderBottomRightRadius: 4,
     paddingHorizontal: 16,
@@ -585,16 +590,10 @@ const styles = StyleSheet.create({
   },
   aiMessage: {
     alignSelf: 'flex-start',
-    backgroundColor: '#FFFFFF',
     borderRadius: 18,
     borderBottomLeftRadius: 4,
     paddingHorizontal: 16,
     paddingVertical: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
   },
   messageText: {
     fontSize: 16,
@@ -610,7 +609,6 @@ const styles = StyleSheet.create({
   },
   timestamp: {
     fontSize: 11,
-    color: '#8E8E93',
     marginTop: 4,
     textAlign: 'right',
   },
@@ -619,7 +617,6 @@ const styles = StyleSheet.create({
   },
   typingText: {
     fontSize: 14,
-    color: '#8E8E93',
     fontStyle: 'italic',
     textAlign: 'right',
   },
@@ -627,7 +624,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     padding: 4,
     borderRadius: 12,
-    backgroundColor: '#F0F0F0',
     minWidth: 32,
     alignItems: 'center',
   },
@@ -647,7 +643,6 @@ const styles = StyleSheet.create({
   },
   waveBar: {
     width: 2,
-    backgroundColor: '#007AFF',
     marginHorizontal: 0.5,
     borderRadius: 1,
   },
@@ -679,7 +674,6 @@ const styles = StyleSheet.create({
   conversationBallStatus: {
     marginTop: 12,
     fontSize: 14,
-    color: '#8E8E93',
     fontWeight: '500',
     textAlign: 'center',
   },
@@ -716,7 +710,6 @@ const styles = StyleSheet.create({
     bottom: Platform.OS === 'ios' ? 40 : 20,
     left: 16,
     right: 16,
-    backgroundColor: '#FFFFFF',
     borderRadius: 25,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -734,26 +727,21 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#E5E5EA',
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 10,
     fontSize: 16,
     maxHeight: 100,
     marginRight: 8,
-    backgroundColor: '#F8F8F8',
   },
   sendButton: {
-    backgroundColor: '#007AFF',
     borderRadius: 20,
     width: 40,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  sendButtonDisabled: {
-    backgroundColor: '#E5E5EA',
-  },
+  sendButtonDisabled: {},
   textToggleButton: {
     position: 'absolute',
     bottom: Platform.OS === 'ios' ? 50 : 30,
@@ -761,7 +749,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',

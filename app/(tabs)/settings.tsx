@@ -301,7 +301,7 @@ export default function SettingsScreen() {
   );
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.backgroundSecondary }]}>
+    <View style={[styles.container, { backgroundColor: colors.backgroundSecondary }]}>
       <View style={[styles.header, { backgroundColor: colors.cardElevated, borderBottomColor: colors.border, ...shadows.small }]}>
         <Text style={[styles.headerTitle, { color: colors.text, textAlign: isRTL ? 'right' : 'left' }]}>
           {t('settings')}
@@ -337,7 +337,7 @@ export default function SettingsScreen() {
       </ScrollView>
       
       <LanguageModal />
-    </SafeAreaView>
+    </View>
   );
 }
 
