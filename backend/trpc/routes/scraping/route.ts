@@ -296,10 +296,10 @@ export const clearScrapingCacheProcedure = publicProcedure
   });
 
 export const getScrapingStatusProcedure = publicProcedure
-  .query(async () => {
+  .query(() => {
     console.log('getScrapingStatusProcedure called');
     
-    // Always return a valid object, never undefined
+    // Always return a valid object, never undefined - make this synchronous to avoid any async issues
     const fallbackResult = {
       success: true,
       isScrapingAll: false,
@@ -346,8 +346,18 @@ export const getScrapingHistoryProcedure = publicProcedure
     limit: z.number().optional().default(20),
     source: z.enum(['bayut', 'aqar', 'wasalt']).optional()
   }))
-  .query(async ({ input }) => {
+  .query(({ input }) => {
     console.log('getScrapingHistoryProcedure called with input:', input);
+    
+    // Always return a valid object, never undefined - make this synchronous to avoid any async issues
+    const fallbackResult = {
+      success: true,
+      history: [],
+      totalRuns: 0,
+      filtered: false,
+      source: input.source || null
+    };
+    
     try {
       let filteredHistory = scrapingHistory || [];
       
@@ -373,13 +383,6 @@ export const getScrapingHistoryProcedure = publicProcedure
       return result;
     } catch (error) {
       console.error('Error getting scraping history:', error);
-      const fallbackResult = {
-        success: true,
-        history: [],
-        totalRuns: 0,
-        filtered: false,
-        source: input.source || null
-      };
       console.log('getScrapingHistoryProcedure returning fallback:', JSON.stringify(fallbackResult, null, 2));
       return fallbackResult;
     }
@@ -473,10 +476,10 @@ const alternativeDataSources = {
 };
 
 export const getAlternativeDataSourcesProcedure = publicProcedure
-  .query(async () => {
+  .query(() => {
     console.log('getAlternativeDataSourcesProcedure called');
     
-    // Always return a valid object, never undefined
+    // Always return a valid object, never undefined - make this synchronous to avoid any async issues
     const fallbackResult = {
       success: true,
       alternatives: alternativeDataSources || {
@@ -667,7 +670,19 @@ export const controlAutoScrapingProcedure = publicProcedure
   });
 
 export const getAdvancedScrapingInfoProcedure = publicProcedure
-  .query(async () => {
+  .query(() => {
+    // Always return a valid object, never undefined - make this synchronous to avoid any async issues
+    const fallbackResult = {
+      success: true,
+      info: {
+        isAdvancedMode: false,
+        autoScrapingEnabled: false,
+        lastAdvancedRun: null,
+        proxyStatus: 'disabled',
+        retrySettings: { maxRetries: 3, delay: 1000 }
+      }
+    };
+    
     try {
       return {
         success: true,
@@ -680,17 +695,7 @@ export const getAdvancedScrapingInfoProcedure = publicProcedure
         }
       };
     } catch (error) {
-      return {
-        success: false,
-        message: 'Failed to get advanced scraping info',
-        error: error instanceof Error ? error.message : 'Unknown error',
-        info: {
-          isAdvancedMode: false,
-          autoScrapingEnabled: false,
-          lastAdvancedRun: null,
-          proxyStatus: 'disabled',
-          retrySettings: { maxRetries: 3, delay: 1000 }
-        }
-      };
+      console.error('Error in getAdvancedScrapingInfoProcedure:', error);
+      return fallbackResult;
     }
   });
