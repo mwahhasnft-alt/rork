@@ -3,6 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -33,7 +34,7 @@ export function CustomHeader({
         <View style={styles.leftSection}>
           {leftComponent || (
             <Text style={[styles.titleEn, { color: colors.text }]}>
-              {titleEn}
+              Aqar AI
             </Text>
           )}
         </View>
@@ -42,9 +43,11 @@ export function CustomHeader({
         {showLogo && (
           <View style={styles.centerSection}>
             <View style={[styles.logoContainer, shadows.small]}>
-              <View style={styles.logoGradient}>
-                <Text style={styles.logoText}>A</Text>
-              </View>
+              <Image 
+                source={{ uri: 'https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/qcdxlr1ketr9syvrp7hux' }}
+                style={styles.logoImage}
+                resizeMode="contain"
+              />
             </View>
           </View>
         )}
@@ -53,7 +56,7 @@ export function CustomHeader({
         <View style={styles.rightSection}>
           {rightComponent || (
             <Text style={[styles.titleAr, { color: colors.text }]}>
-              {titleAr}
+              العقار الذكي
             </Text>
           )}
         </View>
@@ -108,18 +111,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     overflow: 'hidden',
   },
-  logoGradient: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#7C3AED',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: BorderRadius.lg,
-  },
-  logoText: {
-    color: '#FFFFFF',
-    fontSize: Typography.fontSizes.lg,
-    fontWeight: Typography.fontWeights.bold,
-    letterSpacing: Typography.letterSpacing.wide,
+  logoImage: {
+    width: 32,
+    height: 32,
   },
 });
